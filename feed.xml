@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Return Zero</title>
+    <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>http://localhost:8080</link>
+    <description>aventuras en C++ y la programación en general</description>
+    <pubDate>Fri, 18 Mar 2016 15:00:00 -0300</pubDate>
+    <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
+    <language>en</language>
+    <item>
+      <title>Definiendo funciones no tipadas con el uso plantillas</title>
+      <link>http://localhost:8080/articles/plantillas-funciones/</link>
+      <pubDate>Fri, 18 Mar 2016 15:00:00 -0300</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/plantillas-funciones/</guid>
+      <author></author>
+      <description>&lt;p&gt;Como con cualquier otro lenguaje de tipado estático, cuando escribimos programas
+en C++ estamos obligados a especificar siempre los tipos de nuestras variables,
+pues de otro modo el programa no compilará. Esta característica, por supuesto,
+incluye sus ventajas. En especial, significa ahorrarle a la máquina que tipifique
+las variables en tiempo de ejecución, y por lo tanto, obtener una mejor 
+eficiencia. Pero similar a casi cualquier otra ventaja, también significa sacrificar
+algo. En este caso, es a costa de la enorme flexibilidad que se puede
+observar en lenguajes de tipado dinámico como Python o Ruby. Aunque no todo es
+así de estricto. Hay casos donde contar con esta flexibilidad es una necesidad
+elemental.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Por ejemplo, digamos que quisieras escribir una función que calcule el máximo
+de dos números. Podrías hacerlo de esta forma:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;  &lt;span class=&quot;title&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nX, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nY)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (nX &amp;gt; nY) ? nX : nY;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esta función funcionaría bien – pero con enteros. ¿Qué sucede si más tarde
+te das cuenta que necesitas que tu función funcione con doubles? Tradicionalmente,
+la respuesta sería sobrecargar la función max() y crear una nueva versión
+que funcione con doubles:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt;  &lt;span class=&quot;title&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; dX, &lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; dY)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (dX &amp;gt; dY) ? dX : dY;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nota que el código para la implementación de la versión con doubles es exactamente
+el mismo que para la versión con enteros! De hecho, esta implementación funcionaría
+con toda suerte de tipos distintos: chars, ints, doubles y si has sobrecargado el 
+operador &amp;gt;, incluso con clases! Sin embargo, como C++ te exige hacer a tus variables
+de tipos especificos, te atascas escribiendo una función para cada tipo que quieras
+usar.&lt;/p&gt;
+&lt;p&gt;Tener que especificar distintos “sabores” de la misma función,
+donde lo único que cambia es el tipo de los parámetros se puede convertir en un severo
+dolor de cabeza y un desperdicio de tiempo, además que va en contra del consejo
+de programación general de que se debería minimizar la duplicación de código tanto
+como sea posible. ¿No sería genial si pudieramos escribir una versión de max() que
+fuera capaz de trabajar con parámetro de CUALQUIER tipo?&lt;/p&gt;
+&lt;p&gt;Aquí es donde aparecen las plantillas de funciones.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;¿Qué es una plantilla de función?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Si buscases la palabra “plantilla” en el diccionario, encontrarías una definición
+similar a la siguiente: “una plantilla es un modelo que sirve como un patrón para
+crear objetos similares”. Un tipo de plantilla que es muy fácil de comprender son
+los stencils. Un stencil es un objeto (ej. un trozo de cartón) con una forma
+recortada (ej. la letra J). Colocando el stencil sobre otro objeto, luego de 
+pintar con un spray a través del agujero, puedes producir patrones estencilados
+muy rápidamente en muchos colores diferentes! Nota que sólo necesitas crear un
+stencil determinado una sola vez - luego puedes usarlo tantas veces como quieras
+crear patrones estencilados en cualquier color(es) que quieras. Incluso mejor,
+no tienes que decidir el color del patrón estencilado hasta que decides
+realmente usar el estencil.&lt;/p&gt;
+&lt;p&gt;En C++, las plantillas de funciones, son funciones que sirven como un patrón para
+crear otras funciones similares. La idea básica detrás de las plantillas de 
+funciones es crear una función sin tener que especificar el(los) tipo(s) exacto(s)
+de algunas o todas las variables. En vez de eso, definimos la función usando 
+espacios reservados llamados parámetros de tipo de la plantilla. Una vez que 
+creamos una función usando estos espacios reservados para los tipos, creamos
+efectivamente una “función estencil”.&lt;/p&gt;
+&lt;p&gt;Resulta que no puedes llamar a una plantilla de función directamente – esto 
+se debe a que el compilador no sabe cómo manejar los espacios reservados para
+los tipos directamente. En su lugar, cuando llamamos a una plantilla de función,
+el compilador “genera un estencil” de la plantilla, reemplazando los espacios
+reservados para los tipos con los tipos de variable real en tu llamada a la
+función! Usando esta metodología, el compilador puede crear múltiples “sabores”
+de una función desde una plantilla!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Creando plantillas de funciones en C++&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Ya te debes estar preguntando cómo crear plantillas de funciones en C++. Resulta
+que no es del todo difícil.&lt;/p&gt;
+&lt;p&gt;Revisemos la versión de max() con enteros nuevamente:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;  &lt;span class=&quot;title&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nX, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nY)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (nX &amp;gt; nY) ? nX : nY;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nota que hay 3 lugares donde se usan tipos especificos: para los parámetros nX, nY,
+y el valor de retorno está especificado que deben ser enteros. Para crear una
+plantilla de función, vamos a reemplazar estos tipos especificos con espacios
+reservados para tipos. En este caso, dado que sólo tenemos un tipo que necesita
+reemplazarse (int), solo necesitamos un parámetro de tipo para la plantilla.
+Llamemos a nuestro espacio reservado para tipos “Type”. Puedes nombrar a tu 
+espacio reservado para tipos de casi cualquier forma que quieras, siempre que 
+no sea una palabra reservada. Aquí está nuestra función con un espacio reservado
+para tipos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;Type  &lt;span class=&quot;title&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Type tX, Type tY)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (tX &amp;gt; tY) ? tX : tY;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(Nota: También cambié la notación húngara de las variables para que reflejen que
+ya no son necesariamente enteros - son de cualquier tipo Type que indiquemos!)&lt;/p&gt;
+&lt;p&gt;Este es un buen comienzo - sin embargo, no compilará porque el compilador no sabe
+que significa “Type”! Con el fin de decirle al compilador que Type es un espacio
+reservado para tipos, necesitamos decirle formalmente al compilador que Type es
+un parámetro de tipo plantilla. Aquí es donde se usa la llamada &lt;strong&gt;declaración
+de parámetros de plantilla&lt;/strong&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;template&lt;/span&gt; &amp;lt;&lt;span class=&quot;keyword&quot;&gt;typename&lt;/span&gt; Type&amp;gt; &lt;span class=&quot;comment&quot;&gt;// &amp;lt;= declaración de los parámetros&lt;/span&gt;
+&lt;span class=&quot;function&quot;&gt;Type  &lt;span class=&quot;title&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Type tX, Type tY)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (tX &amp;gt; tY) ? tX : tY;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Creelo o no, estamos listos! Esto compilará!&lt;/p&gt;
+&lt;p&gt;Ahora, miremos más de cerca la declaración de parámetros del template. Comenzamos
+con la palabra clave &lt;em&gt;template&lt;/em&gt; - esto le dice al compilador que lo que sigue
+va a ser una lista de parámetros de plantilla. Colocamos todos nuestros parámetros
+dentro de paréntesis angulares (&amp;lt; &amp;gt;). Para crear un parámetro de tipo de la plantilla
+usamos ya sea la palabra clave &lt;em&gt;typename&lt;/em&gt; o &lt;em&gt;class&lt;/em&gt;. No hay diferencia entre las
+dos palabras claves en este contexto, y usualmente verás a gente usando la 
+palabra clave class. Sin embargo, preferimos la palabra clave más nueva typename,
+ya que deja más claro que el parámetro de tipo de la plantilla no tiene que ser
+una clase. Después de la palabra clave typename o class, todo lo que queda es
+seleccionar un nombre para el espacio reservado para el tipo. Tradicionalmente,
+con funciones que sólo tienen un parámetro de tipo en la plantilla, se usa el
+nombre “Type” (a menudo abrevido a “T”). Si la plantilla de función usa múltiples
+parámetros de tipo en la plantilla, pueden ir separados por coma:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;template&lt;/span&gt; &amp;lt;&lt;span class=&quot;keyword&quot;&gt;typename&lt;/span&gt; T1, &lt;span class=&quot;keyword&quot;&gt;typename&lt;/span&gt; T2&amp;gt;
+&lt;span class=&quot;comment&quot;&gt;//plantilla de la función aquí&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Usando plantillas de funciones&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Usar una plantilla de función es extremadamente sencillo - tan solo tienes que
+usarla como con cuaqluier otra función.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nValor = max(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//retorna 7&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; dValor = max(&lt;span class=&quot;number&quot;&gt;6.34&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;18.523&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//retorna 18.523&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; chValor = max(&lt;span class=&quot;string&quot;&gt;'a'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'6'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//retorna 'a'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nota que todas estas tres llamadas a max() tienen parámetros de distintos tipos!&lt;/p&gt;
+&lt;p&gt;Como puedes ver, las plantillas de funciones puede ahorrarte un montón de tiempo,
+porque sólo necesitas escribir una función, y funcionará con muchos tipos distintos.
+Una vez que te acostumbras a escribir plantillas de funciones, encontrarás que 
+en realidad no toma más tiempo que escribir funciones con tipos reales. Las plantillas
+de funciones reducen la mantención de código, porque el código duplicado se reduce
+significativamente. Y finalmente, las plantillas de funciones pueden ser más seguras,
+porque no hay necesidad de copiar las funciones y cambiar los tipos a mano
+cuando sea que necesites que la función funciones con un tipo nuevo!&lt;/p&gt;
+&lt;p&gt;Las plantillas de funciones tienen unas pocas desventajas, y sería &amp;lt;&amp;gt; no
+mencionarlas. En primer lugar, los compiladores más antiguos no tienen muy buen
+soporte para las plantillas. Sin embargo, los compiladores modernos son mucho
+mejores en soportar y implementar apropiadamente la funcionalidad de plantillas.
+En segundo lugar, las plantillas de funciones producen mensajes de error que se
+ven de locos y que son mucho más complicados de descifrar que aquellos de las
+funciones regulares. Sin embargo, estas desventajas son menores comparadas con
+la potencia y flexibilidad que brindan las plantillas a tu kit de herramientas
+de programación!&lt;/p&gt;
+&lt;p&gt;Nota: La librería estándar ya viene con una función max() en forma de plantilla. 
+Si usas la instrucción “using namespace std;” el compilador será incapaz de
+decir si quieres tu versión de max() o la de std::max(). &lt;/p&gt;
+</description>
+    </item>
+  </channel>
+</rss>

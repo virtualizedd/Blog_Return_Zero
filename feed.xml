@@ -19,12 +19,10 @@ en C++ estamos obligados a especificar siempre los tipos de nuestras variables,
 pues de otro modo el programa no compilará. Esta característica, por supuesto,
 incluye sus ventajas. En especial, significa ahorrarle a la máquina que tipifique
 las variables en tiempo de ejecución, y por lo tanto, obtener una mejor 
-eficiencia. Pero similar a casi cualquier otra ventaja, también significa sacrificar
-algo. En este caso, es a costa de la enorme flexibilidad que se puede
-observar en lenguajes de tipado dinámico como Python o Ruby. Aunque no todo es
-así de estricto. Hay casos donde contar con esta flexibilidad es una necesidad
-elemental.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+eficiencia. Pero similar a casi cualquier otra ventaja, también significa dar
+algo a cambio. En este caso, es a costa de la potencial flexibilidad que se puede
+observar en lenguajes de tipado dinámico como Python o Ruby.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Por ejemplo, digamos que quisieras escribir una función que calcule el máximo
 de dos números. Podrías hacerlo de esta forma:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;  &lt;span class=&quot;title&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nX, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nY)&lt;/span&gt;

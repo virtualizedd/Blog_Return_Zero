@@ -5,9 +5,90 @@
     <atom:link href="http://virtualizedd.github.io/return-zero/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://virtualizedd.github.io/return-zero</link>
     <description>aventuras en C++ y la programación en general</description>
-    <pubDate>Fri, 18 Mar 2016 15:00:00 -0300</pubDate>
+    <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Declarando punteros nulos</title>
+      <link>http://virtualizedd.github.io/return-zero/articles/punteros-nulos/</link>
+      <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
+      <guid isPermaLink="true">http://virtualizedd.github.io/return-zero/articles/punteros-nulos/</guid>
+      <author></author>
+      <description>&lt;p&gt;Al igual que las variables normales, los punteros no se inicializan cuando se
+instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
+basura por defecto.&lt;/p&gt;
+&lt;p&gt;Además de direcciones de memoria, hay un valor adicional que pueden almacenar
+los punteros: un valor null. Un &lt;strong&gt;valor null&lt;/strong&gt; es un valor especial que significa
+que el puntero no está apuntando a nada. A un puntero que almacena un valor null
+se le llama un &lt;strong&gt;puntero nulo&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;En C++, podemos asignar un valor null a un puntero inicializándolo con el literal
+0.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Como un puntero null se evalua a 0, se puede usar dentro de una proposición
+condicional para verificiar si el puntero es nulo o no:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(ptr)
+    &lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;ptr está apuntando a un valor double.&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;ptr es un puntero nulo&quot;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Mejor práctica: inicializa tus punteros a un valor null si no les darás otro
+valor.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Deferenciando punteros nulos&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Deferenciar un puntero basura nos lleva a resultados indefinifidos. El
+deferenciar un puntero nulo también nos lleva a comportamiento indefinido. En
+la mayoría de los casos, bloqueará tu aplicación.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;el macro NULL&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;C(pero no C++) define un macro de preprocesador llamado NULL que es #defined como
+el valor 0. Incluso aunque no es técnicamente parte de C++, su uso es lo tan
+común que debería funcionar en todo compilador de C++.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Sin embargo, como NULL es un macro del preprocesador y como no es tecnicámente parte
+de C++, la mejor práctica en C++ es evitar usarlo.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;nullptr en C++11&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Nota que el valor 0 no es un tipo de puntero, así que asignarle 0 a un puntero
+para denotar que es un puntero nulo es un poco inconsistente. En casos raros,
+cuando se usa como argumento literal, puede incluso causar problemas porque el
+compilador no puede decidir si nos referimos a un puntero nulo o al entero 0:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;hazAlgo(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//0 es un argumento entero&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//o un puntero nulo?&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//(asumirá que es entero)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para encausar estos problemas, C++11 introdujo una nueva palabra clave llamada
+&lt;strong&gt;nullptr&lt;/strong&gt;. Esta es tanto una palabra clave como una constante rvalor, al igual
+que las palabras claves booleanas true and false.&lt;/p&gt;
+&lt;p&gt;Si se trata de C++11, esta palabra clave deberíamos favorecer en lugar del 0
+ cuando queramos un puntero nulo.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &lt;span class=&quot;literal&quot;&gt;nullptr&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;C++ convertirá de forma implícita nullptr a cualquier tipo de puntero. Así que
+en el ejemplo de arriba, nullptr se convierte implícitamente a un puntero entero,
+y luego se le asigna el valor de nullptr(0) a ptr.&lt;/p&gt;
+&lt;p&gt;También se puede usar como un literal en una llamada a una función.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;hazAlgo(&lt;span class=&quot;literal&quot;&gt;nullptr&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//este argumento definitivamente&lt;/span&gt;
+                  &lt;span class=&quot;comment&quot;&gt;//es un puntero nulo;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Mejor práctica: Con C++11, usa nullptr para inicializar tus punteros a un valor
+nulo&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;std::nullptr_t en C++11&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;C++11 también introduce un nuevo tipo llamado std::nullptr_t (en el encabezado&lt;/p&gt;
+&lt;p&gt;&lt;cstddef&gt;). std::nullptr_t sólo puede almacenar un valor: nullptr! Aunque esto
+puede parecer una tontera, es útil en una situación. Si queremos escribir una
+función que acepte un argumento nullptr, ¿de qué tipo hacemos al parámetro?
+La respuesta es std::nullptr_t.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hazAlgo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::nullptr_t ptr)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;en hazAlgo()\n&quot;&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Probablemente ni siquiera uses esto, pero es bueno saberlo, tan sólo por 
+si acaso.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Definiendo funciones no tipadas con el uso plantillas</title>
       <link>http://virtualizedd.github.io/return-zero/articles/plantillas-funciones/</link>

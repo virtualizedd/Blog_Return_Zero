@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Declarando punteros nulos - Return Zero
+    </title>
+    <link rel="alternate" href="http://virtualizedd.github.io/return-zero/feed.xml" type="application/rss+xml" title="aventuras en C++ y la programación en general">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="http://virtualizedd.github.io/return-zero/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Declarando punteros nulos</h1>
+        <p class="author">Escrito por <span class="author">CodePaste</span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Al igual que las variables normales, los punteros no se inicializan cuando se
+instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
+basura por&nbsp;defecto.</p>
+<p>Además de direcciones de memoria, hay un valor adicional que pueden almacenar
+los punteros: un valor null. Un <strong>valor null</strong> es un valor especial que significa
+que el puntero no está apuntando a nada. A un puntero que almacena un valor null
+se le llama un <strong>puntero nulo</strong>.</p>
+<p><span class="more"></span></p>
+<p>En C++, podemos asignar un valor null a un puntero inicializándolo con el literal&nbsp;0.</p>
+<pre><code class="lang-cpp"><span class="function"><span class="keyword">int</span> *<span class="title">ptr</span><span class="params">(<span class="number">0</span>)</span></span>;
+</code></pre>
+<p>Como un puntero null se evalua a 0, se puede usar dentro de una proposición
+condicional para verificiar si el puntero es nulo o&nbsp;no:</p>
+<pre><code class="lang-cpp"><span class="function"><span class="keyword">double</span> *<span class="title">ptr</span><span class="params">(<span class="number">0</span>)</span></span>;
+
+<span class="keyword">if</span>(ptr)
+    <span class="built_in">cout</span> &lt;&lt; <span class="string">"ptr está apuntando a un valor double."</span>;
+<span class="keyword">else</span>
+    <span class="built_in">cout</span> &lt;&lt; <span class="string">"ptr es un puntero nulo"</span>;
+</code></pre>
+<p><em>Mejor práctica: inicializa tus punteros a un valor null si no les darás otro&nbsp;valor.</em></p>
+<p><strong>Deferenciando punteros&nbsp;nulos</strong></p>
+<p>Deferenciar un puntero basura nos lleva a resultados indefinifidos. El
+deferenciar un puntero nulo también nos lleva a comportamiento indefinido. En
+la mayoría de los casos, bloqueará tu&nbsp;aplicación.</p>
+<p><strong>el macro&nbsp;<span class="caps">NULL</span></strong></p>
+<p>C(pero no C++) define un macro de preprocesador llamado <span class="caps">NULL</span> que es #defined como
+el valor 0. Incluso aunque no es técnicamente parte de C++, su uso es lo tan
+común que debería funcionar en todo compilador de&nbsp;C++.</p>
+<pre><code class="lang-cpp"><span class="function"><span class="keyword">int</span> *<span class="title">ptr</span><span class="params">(<span class="literal"><span class="caps">NULL</span></span>)</span></span>;
+</code></pre>
+<p>Sin embargo, como <span class="caps">NULL</span> es un macro del preprocesador y como no es tecnicámente parte
+de C++, la mejor práctica en C++ es evitar&nbsp;usarlo.</p>
+<p><strong>nullptr en&nbsp;C++11</strong></p>
+<p>Nota que el valor 0 no es un tipo de puntero, así que asignarle 0 a un puntero
+para denotar que es un puntero nulo es un poco inconsistente. En casos raros,
+cuando se usa como argumento literal, puede incluso causar problemas porque el
+compilador no puede decidir si nos referimos a un puntero nulo o al entero&nbsp;0:</p>
+<pre><code class="lang-cpp">hazAlgo(<span class="number">0</span>); <span class="comment">//0 es un argumento entero</span>
+            <span class="comment">//o un puntero nulo?</span>
+            <span class="comment">//(asumirá que es entero)</span>
+</code></pre>
+<p>Para encausar estos problemas, C++11 introdujo una nueva palabra clave llamada
+<strong>nullptr</strong>. Esta es tanto una palabra clave como una constante rvalor, al igual
+que las palabras claves booleanas true and&nbsp;false.</p>
+<p>Si se trata de C++11, esta palabra clave deberíamos favorecer en lugar del 0
+ cuando queramos un puntero&nbsp;nulo.</p>
+<pre><code class="lang-cpp"><span class="keyword">int</span> *ptr = <span class="literal">nullptr</span>;
+</code></pre>
+<p>C++ convertirá de forma implícita nullptr a cualquier tipo de puntero. Así que
+en el ejemplo de arriba, nullptr se convierte implícitamente a un puntero entero,
+y luego se le asigna el valor de nullptr(0) a&nbsp;ptr.</p>
+<p>También se puede usar como un literal en una llamada a una&nbsp;función.</p>
+<pre><code class="lang-cpp">hazAlgo(<span class="literal">nullptr</span>); <span class="comment">//este argumento definitivamente</span>
+                  <span class="comment">//es un puntero nulo;</span>
+</code></pre>
+<p><em>Mejor práctica: Con C++11, usa nullptr para inicializar tus punteros a un valor&nbsp;nulo</em></p>
+<p><strong>std::nullptr_t en&nbsp;C++11</strong></p>
+<p>C++11 también introduce un nuevo tipo llamado std::nullptr_t (en el&nbsp;encabezado</p>
+<p><cstddef>). std::nullptr_t sólo puede almacenar un valor: nullptr! Aunque esto
+puede parecer una tontera, es útil en una situación. Si queremos escribir una
+función que acepte un argumento nullptr, ¿de qué tipo hacemos al parámetro?
+La respuesta es&nbsp;std::nullptr_t.</p>
+<pre><code class="lang-cpp"><span class="function"><span class="keyword">void</span> <span class="title">hazAlgo</span><span class="params">(<span class="built_in">std</span>::nullptr_t ptr)</span>
+</span>{
+    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"en hazAlgo()\n"</span>;
+}
+</code></pre>
+<p>Probablemente ni siquiera uses esto, pero es bueno saberlo, tan sólo por 
+si&nbsp;acaso.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="http://virtualizedd.github.io/return-zero">« Inicio </a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2016 Virtualedd &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

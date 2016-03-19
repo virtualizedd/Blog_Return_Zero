@@ -24,6 +24,22 @@
         <article class="article intro">
           <header>
             <p class="date"><span>19. March 2016</span></p>
+            <h2><a href="http://virtualizedd.github.io/return-zero/articles/punteros-nulos/">Declarando punteros nulos</a></h2>
+          </header>
+          <section class="content"><p>Al igual que las variables normales, los punteros no se inicializan cuando se
+instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
+basura por&nbsp;defecto.</p>
+<p>Además de direcciones de memoria, hay un valor adicional que pueden almacenar
+los punteros: un valor null. Un <strong>valor null</strong> es un valor especial que significa
+que el puntero no está apuntando a nada. A un puntero que almacena un valor null
+se le llama un <strong>puntero nulo</strong>.</p>
+<p>
+            <p class="more"><a href="http://virtualizedd.github.io/return-zero/articles/punteros-nulos/">leer más</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
+            <p class="date"><span>19. March 2016</span></p>
             <h2><a href="http://virtualizedd.github.io/return-zero/articles/intro-punteros/">Una breve introducción a los punteros</a></h2>
           </header>
           <section class="content"><p>Las variables son una pieza clave de los lenguajes de programación. Es difícil
@@ -51,175 +67,8 @@ de memoria que tiene&nbsp;asignada.</p>
             <h2><a href="http://virtualizedd.github.io/return-zero/articles/punteros-y-arreglos/">Punteros, arreglos, y cómo están relacionados</a></h2>
           </header>
           <section class="content"><p>Punteros y arreglos están relacionados intrínsicamente en C++. Revisemos sus&nbsp;similitudes.</p>
-<p><span class = "more"></span></p>
-<p>Cuando declaramos un arreglo fijo de la siguiente&nbsp;forma:</p>
-<pre><code class="lang-cpp"><span class="keyword">int</span> arreglo[<span class="number">5</span>] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
-</code></pre>
-<p>para nosotros esto es un arreglo de 5 enteros, pero para el compilador, un 
-arreglo es una variable de tipo int[5]. Sabemos qué son los valores 
-arreglo[0], arreglo[1], arreglo[2], … arreglo[4] (1, 2, 3, … 4, respectivamente).
-¿Pero qué valor tiene el arreglo&nbsp;mismo?.</p>
-<p>La variable arreglo contiene la dirección del primer elemento del arreglo, como si
-fuera un puntero! Puedes observar esto en el siguiente&nbsp;programa:</p>
-<pre><code class="lang-cpp"><span class="keyword">int</span> arreglo[<span class="number">5</span>] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
-
-<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"El arreglo tiene dirección: "</span> &lt;&lt; arreglo &lt;&lt; <span class="string">'\n'</span>;
-
-<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"El elemento 0 tiene dirección: "</span> &lt;&lt; &amp;arreglo[<span class="number">0</span>] &lt;&lt; <span class="string">'\n'</span>;
-</code></pre>
-<p>Nota que la dirección almacenada por la variable arreglo es la misma dirección
-del primer elemento del&nbsp;arreglo.</p>
-<p>Es una falacia común creer que un arreglo y un puntero al arreglo son idénticos.
-No lo son. AUnque ambos apuntan al primer elemento del arreglo, tienen diferente
-tipo de información. En el caso de arriba, el arreglo es de tipo int[5], mientras
-que un puntero sería de tipo int *. Veremos dentro de poco donde está la&nbsp;diferencia.</p>
-<p>La confusión se debe principalmente al hecho de que en muchos casos, cuando se
-evalua un arreglo fijo, esté “decaerá” (se convertiá implícitamente) en un puntero
-al primer elemento del arreglo (esencialmente, perdiendo su información de&nbsp;tipo).</p>
-<p>Sin embargo, esto también nos permite tratar a los arreglos fijos y a los punteros
-de forma idéntica en la mayoría de los&nbsp;casos.</p>
-<p>Por ejemplo, podemos deferenciar el arreglo para obtener el valor del primer&nbsp;elemento:</p>
-<pre><code class="lang-cpp"><span class="keyword">int</span> arreglo[<span class="number">5</span>] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
-
-<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *arreglo;
-</code></pre>
-<p>Nota que no estamos <em>en realidad</em> deferenciando al array mismo. El arreglo (de
-tipo int[5]) obtiene es convertido de forma implícita a un puntero (de tipo
-int *), y deferenciamos el puntero para obtener el valor en la dirección de memoria
-que almacena el puntero (el valor del primer elemento del&nbsp;arreglo).</p>
-<p>También podemos asignar un puntero para que apunte a un&nbsp;arreglo.</p>
-<pre><code class="lang-cpp"><span class="keyword">int</span> arreglo[<span class="number">5</span>] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}
-
-<span class="keyword">int</span> *ptr = <span class="built_in">array</span>;
-
-<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *ptr;
-</code></pre>
-<p>Esto funciona porque el array decae a un puntero de tipo int *, y nuestro
-puntero (también de tipo int *) tiene el mismo&nbsp;tipo.</p>
-<p><strong>Diferencias entre punteros y arreglos&nbsp;fijos</strong></p>
-<p>Hay unas cuántos casos donde escribir un arreglo fijo y un puntero hace una
-diferencia. Estos casos ayudan a ilustrar que un arreglo fijo y un puntero no
-son lo&nbsp;mismo.</p>
-<p>La principal diferencia ocurre cuando se usa el operador <code>sizeof()</code>. Cuando se usa
-sobre un arreglo fijo, <code>sizeof</code> retorna el tamaño del arreglo completo (el tamaño
-de un elemento por la longitud del arreglo). Cuando se usa sobre un puntero,
-<code>sizeof</code> retorna el tamaño de una dirección de memoria (en&nbsp;bytes). </p>
-<pre><code class="lang-cpp"><span class="keyword">int</span> arreglo[<span class="number">5</span>] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
-
-<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(arreglo) &lt;&lt; <span class="string">'\n'</span>; <span class="comment">//tamaño del arreglo</span>
-
-<span class="keyword">int</span> *ptr = <span class="built_in">array</span>;
-
-<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(ptr) &lt;&lt; <span class="string">'\n'</span>; <span class="comment">//tamaño del puntero</span>
-</code></pre>
-<p>Un arreglo fijo sabe cómo de largo es el arreglo al que apunta. Un puntero al
-arreglo no lo&nbsp;sabe.</p>
-<p>La segunda diferencia ocurre cuando se usa el operador &amp;. Al tomar la dirección
-de memoria de un puntero obtenemos la dirección de memoria de la variable puntero.
-Al tomar la dirección de memoria de un arreglo obtenemos un puntero al arreglo
-completo. Este puntero también apunta al primer elemento del arreglo, pero el
-tipo de información es diferente (en el ejemplo de arriba <code>int(*)[5]</code>). Es poco
-probable que necesites usar&nbsp;esto.</p>
-<p><strong>Pasando arreglos fijos a&nbsp;funciones</strong></p>
-<p>Dado que copiar arreglos puede ser algo muy costoso, C++ no copia un arreglo cuando
-se le pasa a una función. En vez de eso, el arreglo fijo decae a un puntero, y el
-puntero se pasa a la&nbsp;función.</p>
-<pre><code class="lang-cpp"><span class="function"><span class="keyword">void</span> <span class="title">imprimirSize</span><span class="params">(<span class="keyword">int</span> *arreglo)</span>
-</span>{
-    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(arreglo) &lt;&lt; <span class="string">'\n'</span>;
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>
-</span>{
-    <span class="keyword">int</span> arreglo[] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
-
-    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(arreglo) &lt;&lt; <span class="string">'\n'</span>;
-    imprimirSize(arreglo);
-
-    <span class="keyword">return</span> <span class="number">0</span>;
-}
-</code></pre>
-<p>Eso sucede incluso si el parámetro se declara como un arreglo&nbsp;fijo.</p>
-<pre><code class="lang-cpp"><span class="function"><span class="keyword">void</span> <span class="title">imprimirSize</span><span class="params">(<span class="keyword">int</span> arreglo[])</span>
-</span>{
-    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(arreglo) &lt;&lt; <span class="string">'\n'</span>;
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>
-</span>{
-    <span class="keyword">int</span> arreglo[] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
-
-    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(arreglo) &lt;&lt; <span class="string">'\n'</span>;
-    imprimirSize(arreglo);
-
-    <span class="keyword">return</span> <span class="number">0</span>;
-}
-</code></pre>
-<p>En este último ejemplo, C++ convierte implícitamente los parámetros usando la
-síntaxis de arreglos ([]) a la sintaxis de punteros (*), Eso significa que las
-dos declaraciones siguientes son&nbsp;idénticas.</p>
-<pre><code class="lang-cpp"><span class="function"><span class="keyword">void</span> <span class="title">imprimirSize</span><span class="params">(<span class="keyword">int</span> arreglo[])</span></span>;
-<span class="function"><span class="keyword">void</span> <span class="title">imprimirSize</span><span class="params">(<span class="keyword">int</span> *arreglo)</span></span>;
-</code></pre>
-<p>Algunos programadores prefieren usar [] ya que hace más claro que la función 
-está esperando un arreglo. Sin embargo, en la mayoría de los casos, cómo el
-puntero no sabe cómo de largo es el arreglo, necesitarás pasar el tamaño del
-arreglo como un argumento separado de cualquier forma (los strings son una
-excepción porque acaban con&nbsp;null).</p>
-<p>Recomendamos usar la síntaxis de punteros, porque deja más claro que los parámetros
-son tratados como punteros, y no como arreglos fijos, y que en ciertas operaciones,
-como <code>sizeof()</code>, operará como un&nbsp;puntero.</p>
-<p><strong>Un poco sobre pasar por&nbsp;referencia/dirección</strong></p>
-<p>El hecho de que los arreglos decaen a puntero cuando se pasan a una función
-explica la razón por la cual al cambiar un arreglo en una función también se
-cambia el arreglo que se pasa como argumento. Considera el siguiente&nbsp;ejemplo:</p>
-<pre><code class="lang-cpp"><span class="function"><span class="keyword">void</span> <span class="title">cambiarArreglo</span><span class="params">(<span class="keyword">int</span> *ptr)</span>
-</span>{
-    *ptr = <span class="number">5</span>;
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>
-</span>{
-    <span class="keyword">int</span> arreglo[] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>};
-
-    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"El elemento 0 tiene valor: "</span> &lt;&lt; arreglo[<span class="number">0</span>] &lt;&lt; <span class="string">'\n'</span>;
-
-    cambiarArreglo(arreglo);
-
-    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"El elemento 0 tiene valor: "</span> &lt;&lt; arreglo[<span class="number">0</span>] &lt;&lt; <span class="string">'\n'</span>;
-
-    <span class="keyword">return</span> <span class="number">0</span>;
-}
-</code></pre>
-<p>Cuando se llama a cambiarArreglo, el arreglo decae a un puntero, y el valor
-de ese puntero (la dirección de memoria del primer elemento del arreglo) se
-copia en el parámetro ptr de la función. Aunque el valor de ptr es una copia
-de la dirección de memoria del arreglo, apunta al arreglo real (no a una copia!).
-Por lo tanto, cuando se deferencia a ptr, se deferencia al arreglo&nbsp;real!.</p>
-<p>Los lectores astutos notarán que este fenómeno también ocurre con punteros
-a valores que no son&nbsp;arreglos.</p>
-<p><strong>Los arreglos de structs y clases no&nbsp;decaen</strong></p>
-<p>Finalmente, vale destacar que los arreglos que son partes de structs o clases no
-decaen cuando el struct o la clase completa se pasan a una función. Esto
-nos lleva a una forma útil de prevenir que decaigan si así lo queremos,  y que
-será valiosa cuando escribamos clases que usan&nbsp;arreglos.</p>
-
-          </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>19. March 2016</span></p>
-            <h2><a href="http://virtualizedd.github.io/return-zero/articles/punteros-nulos/">Declarando punteros nulos</a></h2>
-          </header>
-          <section class="content"><p>Al igual que las variables normales, los punteros no se inicializan cuando se
-instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
-basura por&nbsp;defecto.</p>
-<p>Además de direcciones de memoria, hay un valor adicional que pueden almacenar
-los punteros: un valor null. Un <strong>valor null</strong> es un valor especial que significa
-que el puntero no está apuntando a nada. A un puntero que almacena un valor null
-se le llama un <strong>puntero nulo</strong>.</p>
 <p>
-            <p class="more"><a href="http://virtualizedd.github.io/return-zero/articles/punteros-nulos/">leer más</a></p>
+            <p class="more"><a href="http://virtualizedd.github.io/return-zero/articles/punteros-y-arreglos/">leer más</a></p>
           </section>
         </article>
         <article class="article intro">

@@ -90,6 +90,405 @@ si acaso.&lt;/p&gt;
 </description>
     </item>
     <item>
+      <title>Una breve introducción a los punteros</title>
+      <link>http://virtualizedd.github.io/return-zero/articles/intro-punteros/</link>
+      <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
+      <guid isPermaLink="true">http://virtualizedd.github.io/return-zero/articles/intro-punteros/</guid>
+      <author></author>
+      <description>&lt;p&gt;Las variables son una pieza clave de los lenguajes de programación. Es difícil
+imaginar la programación sin ellas. Al fin y al cabo, necesitamos de un medio
+para leer y escribir datos en memoria, ¿Y qué más sencillo que dar un nombre fácil
+de recordar y descriptivo a un espacio de la memoria, y luego simplemente
+acceder a ese espacio mediante ese nombre para ya sea lee o escribir el dato
+que almacena? Bueno, justamente eso permiten las variables. Cuando nuestro
+programa instancia a una variable se le asigna automátcamente una dirección de
+memoria libre, y cualquier valor que le asignemos se almacena en esta dirección
+de memoria. Adicionalmente, lo genial
+con las variables es que no hay necesidad de preocuparse de la dirección 
+de memoria específica en la que se almacena un valor. Sólo es necesario usar 
+el identificador de la variable.
+El compilador hará el trabajo de traducir este identificador a la dirección
+de memoria que tiene asignada.&lt;/p&gt;
+&lt;p&gt;Este enfoque, sin embargo, tiene algunas limitaciones.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Operador &amp;amp;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El operador de dirección (&amp;amp;) nos permite ver la dirección de memoria que tiene
+asignada una variable.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &amp;amp;x &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Operador * &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El operador de deferencia (*) nos permite obtener el valor que almacena una
+dirección de memoria en particular.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *&amp;amp;x &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Punteros&lt;/strong&gt;
+Un &lt;strong&gt;puntero&lt;/strong&gt; es una variable que almacena una dirección de memoria como su 
+valor.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Declarando un puntero&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Los punteros se declaran como una variable normal, sólo que con un asterisco
+entre el tipo de dato y el nombre de la variable:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *iPtr; &lt;span class=&quot;comment&quot;&gt;//un puntero a un valor entero;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *dPtr; &lt;span class=&quot;comment&quot;&gt;//un puntero a un valor double;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El asterisco aquí no es una deferencia. Es parte de la declaración de síntaxis
+del puntero.&lt;/p&gt;
+&lt;p&gt;Sintácticamente, C++ aceptará el asterisco después del tipo de dato, o incluso
+en el medio. Sin embargo, cuando se declaran múltiples punteros, el asterisco
+se debe incluir a cada variable. Es fácil olvidar hacer esto si te acostumbras
+a colocar el asterico al tipo en lugar de al nombre de la variable. Sin embargo,
+para los retornos es mejor colocar el asterisco al tipo para mejor legibilidad.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *var; &lt;span class=&quot;comment&quot;&gt;//buena practica&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;* var; &lt;span class=&quot;comment&quot;&gt;//mala practica&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; * var; &lt;span class=&quot;comment&quot;&gt;//mala practica&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;* &lt;span class=&quot;title&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;{...} &lt;span class=&quot;comment&quot;&gt;//buena practica&lt;/span&gt;
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;{...} &lt;span class=&quot;comment&quot;&gt;//mala practica&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tal como las variables normales, los punteros no se inicializan cuando se 
+declaran. Si no son inicializados, tendrán valores basura.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Asignando un valor a un puntero&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Dado que los punteros solo almacenan direcciones, cuando les asignamos un valor,
+debe ser una dirección. Una de las cosas más comunes de hacer con los punteros
+en almacenar en ellos la dirección de memoria de un valor diferente.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor = &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &amp;amp;valor; &lt;span class=&quot;comment&quot;&gt;//puntero inicializado&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Es importante destacar que el tipo del puntero debe coincidir con el tipo del
+valor al que apunta.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; iValor = &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *iPtr = &amp;amp;iValor; &lt;span class=&quot;comment&quot;&gt;//todo bien&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *dPtr = &amp;amp;iValor; &lt;span class=&quot;comment&quot;&gt;//error!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Además, C++ no te permitirá asignar direcciones de memoria literales a un puntero:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *dPtr = &lt;span class=&quot;number&quot;&gt;0012F&lt;/span&gt;F7C; &lt;span class=&quot;comment&quot;&gt;//no está bien, lo trata como si&lt;/span&gt;
+                         &lt;span class=&quot;comment&quot;&gt;//asignaras un entero a un puntero&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;El operación de dirección de memoria retorna un puntero&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Vale la pena notar que el operador &amp;amp; no retorna la dirección de memoria de su
+operando como un literal, sino que retorna un puntero que contiene a la dirección
+del operando, cuyo tipo se deriva del argumento (ej. al tomar la dirección de
+un int retornará la dirección en un puntero int).&lt;/p&gt;
+&lt;p&gt;Esto se puede observar con el siguiente código:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;typeid&lt;/span&gt;(&amp;amp;x).name();
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Deferenciando punteros&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Una vez que tenemos un puntero apuntando a algo, la otra cosa común de hacer con
+él es deferenciar el puntero para obtener el valor al que apunte. &lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor = &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &amp;amp;valor; &lt;span class=&quot;comment&quot;&gt;//direccion de memoria&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; valor;
+
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &amp;amp;valor;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; ptr; &lt;span class=&quot;comment&quot;&gt;//direccion de memoria&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *ptr; &lt;span class=&quot;comment&quot;&gt;//deferencia al puntero&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esta es la razón por la que los punteros deben tener un tipo. Sin un tipo, un
+puntero no sabría cómo interpretar el contenido al que apunta 
+cuando es deferenciado. También es la razón por la que el tipo del puntero y de
+la dirección de memoria que se le asigna deben coincidir. Si no sucede esto,
+cuando el puntero sea deferenciado, malintepretaría los bits como si fueran
+de un tipo diferente.&lt;/p&gt;
+&lt;p&gt;Una vez asignada una dirección a un puntero, como con cualquier otra variable
+se le puede asignar otra dirección a lo largo del programa. Y también es posible
+asignar nuevos valores concretos a la dirección de memoria de un puntero
+simplemente asignando ese otro valor a su deferencia.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor1 = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor2 = &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;;
+
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = valor1; 
+ptr = &amp;amp;valor2 &lt;span class=&quot;comment&quot;&gt;//modificando la direccion&lt;/span&gt;
+*prt = &lt;span class=&quot;number&quot;&gt;40&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//similar a valor2 = 40&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;*Una advertencia sobre deferenciar punteros inválidos&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Los punteros en C++ son inherentemente inseguros, y un uso inapropiado de los
+punteros es una de las mejores formas de arruinar tu aplicación.&lt;/p&gt;
+&lt;p&gt;Cuando se deferencia a un puntero, la aplicación intenta ir a la ubicación de
+memoria que está almacenada en el puntero y retirar el contenido de la memoria.
+Por razonas de seguridad, los sistemas operativos modernos crean un sandbox
+para cada aplicación como forma de prevenir que interactuan inadecuadamente
+unas aplicaciones con otras, y así proteger la estabilidad del sistema operativo
+mismo. Si una aplicación trata de acceder a una ubicación de memoria que no le
+ha sido asignada por el SO, el sistema operativo puede finalizar la aplicación.&lt;/p&gt;
+&lt;p&gt;El siguiente programa ilustra esto, y probablemente se bloquee cuando lo ejecutes.
+(ve con confianza, no dañarás a tu máquina):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&amp;amp;p)&lt;/span&gt;
+&lt;/span&gt;{
+}
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *p; &lt;span class=&quot;comment&quot;&gt;//crea un puntero no inicializado&lt;/span&gt;
+    foo(p); &lt;span class=&quot;comment&quot;&gt;//un truco para que el compilador&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//piense que vamos a asignar a&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//esto un valor válido &lt;/span&gt;
+
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *p; &lt;span class=&quot;comment&quot;&gt;//Deferencia el puntero a valor&lt;/span&gt;
+                    &lt;span class=&quot;comment&quot;&gt;//basura.&lt;/span&gt;
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;El tamaño de los punteros&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El tamaño de un puntero depende de la arquitectura para la que se
+compila el ejecutable – un ejecutable de 32-bits usa direcciones de memoria
+de 32 bits – por lo tanto, un puntero en una máquina de 32bits es de
+32 bits(4 bytes). En una de 64bits, el puntero sería de 64 bits (8 bytes).
+Esto se cumple independiente de a qué valor apunta.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; *chPtr; &lt;span class=&quot;comment&quot;&gt;// chars usualmente son de 1 byte&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *iPtr; &lt;span class=&quot;comment&quot;&gt;// ints usualemente son de 4 bytes&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; Algo
+{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nX, nY, nZ;
+};
+Algo *algunPtr; &lt;span class=&quot;comment&quot;&gt;// Algo es probablemente de 12 bytes&lt;/span&gt;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(chPtr) &amp;lt;&amp;lt; &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::endl; &lt;span class=&quot;comment&quot;&gt;// imprime 4&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(iPtr) &amp;lt;&amp;lt; &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::endl; &lt;span class=&quot;comment&quot;&gt;// 4&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(algunPtr) &amp;lt;&amp;lt; &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::endl; &lt;span class=&quot;comment&quot;&gt;// 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Como puedes ver, el tamaño de un puntero siempre es el mismo. Esto es porque
+el puntero es tan sólo una dirección de memoria, y el número de bits necesarios
+para acceder a una dirección de memoria en una máquina determinada siempre
+es constante.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;¿Qué hay de bueno con los punteros?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;A este punto, los punteros pueden parecer un poco tontos, académico o obtusos.
+¿Por qué usar un puntero si tan sólo podemos usar la variable original’&lt;/p&gt;
+&lt;p&gt;Resulta que los punteros son útiles en muchos casos distintos:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Los arreglos se implementan usando punteros. Los punteros se pueden usar
+para iterar a través de un arreglo (como alternativa a los índices del arreglo)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Son la única forma en la que puedes asignar memoria dinámicamente en C++.
+Este es por lejos el caso de uso más común para los punteros.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para pasar una enorme cantidad de datos a una función de una
+forma que no involucre copiar los datos involucrados, lo cual es ineficiente.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para pasar una función como parámetro a otra función.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para conseguir polimorfismo cuando se trata con herencia.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para tener una clase/struct que apunte a otra clase/struct
+para formar una cadena. Esto es útil en algunas estructuras de datos más avanzadas,
+tales como las listas enlazadas y los árboles.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Conclusión&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Los punteros son variables que almacenan una dirección de memoria. Se pueden
+deferenciar usando el operador (*) para acceder al valor que se almacena en esa
+dirección. Deferenciar a un puntero que almacena valor basura puede bloquear
+tu aplicación.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;title: Una breve introducción a los punteros
+author: CodePaste
+date: 2016-03-19 11:00&lt;/p&gt;
+&lt;h2 id=&quot;template-article-jade&quot;&gt;template: article.jade&lt;/h2&gt;
+&lt;p&gt;Las variables son una pieza clave de los lenguajes de programación. Es difícil
+imaginar la programación sin ellas. Al fin y al cabo, necesitamos de un medio
+para leer y escribir datos en memoria, ¿Y qué más sencillo que dar un nombre fácil
+de recordar y descriptivo a un espacio de la memoria, y luego simplemente
+acceder a ese espacio mediante ese nombre para ya sea lee o escribir el dato
+que almacena? Bueno, justamente eso permiten las variables. Cuando nuestro
+programa instancia a una variable se le asigna automátcamente una dirección de
+memoria libre, y cualquier valor que le asignemos se almacena en esta dirección
+de memoria. Adicionalmente, lo genial
+con las variables es que no hay necesidad de preocuparse de la dirección 
+de memoria específica en la que se almacena un valor. Sólo es necesario usar 
+el identificador de la variable.
+El compilador hará el trabajo de traducir este identificador a la dirección
+de memoria que tiene asignada.&lt;/p&gt;
+&lt;p&gt;Este enfoque, sin embargo, tiene algunas limitaciones.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Operador &amp;amp;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El operador de dirección (&amp;amp;) nos permite ver la dirección de memoria que tiene
+asignada una variable.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &amp;amp;x &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Operador * &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El operador de deferencia (*) nos permite obtener el valor que almacena una
+dirección de memoria en particular.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *&amp;amp;x &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Punteros&lt;/strong&gt;
+Un &lt;strong&gt;puntero&lt;/strong&gt; es una variable que almacena una dirección de memoria como su 
+valor.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Declarando un puntero&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Los punteros se declaran como una variable normal, sólo que con un asterisco
+entre el tipo de dato y el nombre de la variable:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *iPtr; &lt;span class=&quot;comment&quot;&gt;//un puntero a un valor entero;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *dPtr; &lt;span class=&quot;comment&quot;&gt;//un puntero a un valor double;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El asterisco aquí no es una deferencia. Es parte de la declaración de síntaxis
+del puntero.&lt;/p&gt;
+&lt;p&gt;Sintácticamente, C++ aceptará el asterisco después del tipo de dato, o incluso
+en el medio. Sin embargo, cuando se declaran múltiples punteros, el asterisco
+se debe incluir a cada variable. Es fácil olvidar hacer esto si te acostumbras
+a colocar el asterico al tipo en lugar de al nombre de la variable. Sin embargo,
+para los retornos es mejor colocar el asterisco al tipo para mejor legibilidad.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *var; &lt;span class=&quot;comment&quot;&gt;//buena practica&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;* var; &lt;span class=&quot;comment&quot;&gt;//mala practica&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; * var; &lt;span class=&quot;comment&quot;&gt;//mala practica&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;* &lt;span class=&quot;title&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;{...} &lt;span class=&quot;comment&quot;&gt;//buena practica&lt;/span&gt;
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;{...} &lt;span class=&quot;comment&quot;&gt;//mala practica&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tal como las variables normales, los punteros no se inicializan cuando se 
+declaran. Si no son inicializados, tendrán valores basura.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Asignando un valor a un puntero&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Dado que los punteros solo almacenan direcciones, cuando les asignamos un valor,
+debe ser una dirección. Una de las cosas más comunes de hacer con los punteros
+en almacenar en ellos la dirección de memoria de un valor diferente.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor = &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &amp;amp;valor; &lt;span class=&quot;comment&quot;&gt;//puntero inicializado&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Es importante destacar que el tipo del puntero debe coincidir con el tipo del
+valor al que apunta.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; iValor = &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *iPtr = &amp;amp;iValor; &lt;span class=&quot;comment&quot;&gt;//todo bien&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *dPtr = &amp;amp;iValor; &lt;span class=&quot;comment&quot;&gt;//error!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Además, C++ no te permitirá asignar direcciones de memoria literales a un puntero:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *dPtr = &lt;span class=&quot;number&quot;&gt;0012F&lt;/span&gt;F7C; &lt;span class=&quot;comment&quot;&gt;//no está bien, lo trata como si&lt;/span&gt;
+                         &lt;span class=&quot;comment&quot;&gt;//asignaras un entero a un puntero&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;El operación de dirección de memoria retorna un puntero&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Vale la pena notar que el operador &amp;amp; no retorna la dirección de memoria de su
+operando como un literal, sino que retorna un puntero que contiene a la dirección
+del operando, cuyo tipo se deriva del argumento (ej. al tomar la dirección de
+un int retornará la dirección en un puntero int).&lt;/p&gt;
+&lt;p&gt;Esto se puede observar con el siguiente código:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;typeid&lt;/span&gt;(&amp;amp;x).name();
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Deferenciando punteros&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Una vez que tenemos un puntero apuntando a algo, la otra cosa común de hacer con
+él es deferenciar el puntero para obtener el valor al que apunte. &lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor = &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &amp;amp;valor; &lt;span class=&quot;comment&quot;&gt;//direccion de memoria&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; valor;
+
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &amp;amp;valor;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; ptr; &lt;span class=&quot;comment&quot;&gt;//direccion de memoria&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *ptr; &lt;span class=&quot;comment&quot;&gt;//deferencia al puntero&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esta es la razón por la que los punteros deben tener un tipo. Sin un tipo, un
+puntero no sabría cómo interpretar el contenido al que apunta 
+cuando es deferenciado. También es la razón por la que el tipo del puntero y de
+la dirección de memoria que se le asigna deben coincidir. Si no sucede esto,
+cuando el puntero sea deferenciado, malintepretaría los bits como si fueran
+de un tipo diferente.&lt;/p&gt;
+&lt;p&gt;Una vez asignada una dirección a un puntero, como con cualquier otra variable
+se le puede asignar otra dirección a lo largo del programa. Y también es posible
+asignar nuevos valores concretos a la dirección de memoria de un puntero
+simplemente asignando ese otro valor a su deferencia.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor1 = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; valor2 = &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;;
+
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = valor1; 
+ptr = &amp;amp;valor2 &lt;span class=&quot;comment&quot;&gt;//modificando la direccion&lt;/span&gt;
+*prt = &lt;span class=&quot;number&quot;&gt;40&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//similar a valor2 = 40&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;*Una advertencia sobre deferenciar punteros inválidos&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Los punteros en C++ son inherentemente inseguros, y un uso inapropiado de los
+punteros es una de las mejores formas de arruinar tu aplicación.&lt;/p&gt;
+&lt;p&gt;Cuando se deferencia a un puntero, la aplicación intenta ir a la ubicación de
+memoria que está almacenada en el puntero y retirar el contenido de la memoria.
+Por razonas de seguridad, los sistemas operativos modernos crean un sandbox
+para cada aplicación como forma de prevenir que interactuan inadecuadamente
+unas aplicaciones con otras, y así proteger la estabilidad del sistema operativo
+mismo. Si una aplicación trata de acceder a una ubicación de memoria que no le
+ha sido asignada por el SO, el sistema operativo puede finalizar la aplicación.&lt;/p&gt;
+&lt;p&gt;El siguiente programa ilustra esto, y probablemente se bloquee cuando lo ejecutes.
+(ve con confianza, no dañarás a tu máquina):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&amp;amp;p)&lt;/span&gt;
+&lt;/span&gt;{
+}
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *p; &lt;span class=&quot;comment&quot;&gt;//crea un puntero no inicializado&lt;/span&gt;
+    foo(p); &lt;span class=&quot;comment&quot;&gt;//un truco para que el compilador&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//piense que vamos a asignar a&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//esto un valor válido &lt;/span&gt;
+
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *p; &lt;span class=&quot;comment&quot;&gt;//Deferencia el puntero a valor&lt;/span&gt;
+                    &lt;span class=&quot;comment&quot;&gt;//basura.&lt;/span&gt;
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;El tamaño de los punteros&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El tamaño de un puntero depende de la arquitectura para la que se
+compila el ejecutable – un ejecutable de 32-bits usa direcciones de memoria
+de 32 bits – por lo tanto, un puntero en una máquina de 32bits es de
+32 bits(4 bytes). En una de 64bits, el puntero sería de 64 bits (8 bytes).
+Esto se cumple independiente de a qué valor apunta.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; *chPtr; &lt;span class=&quot;comment&quot;&gt;// chars usualmente son de 1 byte&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *iPtr; &lt;span class=&quot;comment&quot;&gt;// ints usualemente son de 4 bytes&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; Algo
+{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nX, nY, nZ;
+};
+Algo *algunPtr; &lt;span class=&quot;comment&quot;&gt;// Algo es probablemente de 12 bytes&lt;/span&gt;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(chPtr) &amp;lt;&amp;lt; &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::endl; &lt;span class=&quot;comment&quot;&gt;// imprime 4&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(iPtr) &amp;lt;&amp;lt; &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::endl; &lt;span class=&quot;comment&quot;&gt;// 4&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(algunPtr) &amp;lt;&amp;lt; &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::endl; &lt;span class=&quot;comment&quot;&gt;// 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Como puedes ver, el tamaño de un puntero siempre es el mismo. Esto es porque
+el puntero es tan sólo una dirección de memoria, y el número de bits necesarios
+para acceder a una dirección de memoria en una máquina determinada siempre
+es constante.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;¿Qué hay de bueno con los punteros?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;A este punto, los punteros pueden parecer un poco tontos, académico o obtusos.
+¿Por qué usar un puntero si tan sólo podemos usar la variable original’&lt;/p&gt;
+&lt;p&gt;Resulta que los punteros son útiles en muchos casos distintos:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Los arreglos se implementan usando punteros. Los punteros se pueden usar
+para iterar a través de un arreglo (como alternativa a los índices del arreglo)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Son la única forma en la que puedes asignar memoria dinámicamente en C++.
+Este es por lejos el caso de uso más común para los punteros.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para pasar una enorme cantidad de datos a una función de una
+forma que no involucre copiar los datos involucrados, lo cual es ineficiente.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para pasar una función como parámetro a otra función.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para conseguir polimorfismo cuando se trata con herencia.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Se pueden usar para tener una clase/struct que apunte a otra clase/struct
+para formar una cadena. Esto es útil en algunas estructuras de datos más avanzadas,
+tales como las listas enlazadas y los árboles.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Conclusión&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Los punteros son variables que almacenan una dirección de memoria. Se pueden
+deferenciar usando el operador (*) para acceder al valor que se almacena en esa
+dirección. Deferenciar a un puntero que almacena valor basura puede bloquear
+tu aplicación.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>Definiendo funciones no tipadas con el uso plantillas</title>
       <link>http://virtualizedd.github.io/return-zero/articles/plantillas-funciones/</link>
       <pubDate>Fri, 18 Mar 2016 15:00:00 -0300</pubDate>

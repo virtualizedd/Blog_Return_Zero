@@ -9,87 +9,6 @@
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
-      <title>Declarando punteros nulos</title>
-      <link>http://virtualizedd.github.io/return-zero/articles/punteros-nulos/</link>
-      <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
-      <guid isPermaLink="true">http://virtualizedd.github.io/return-zero/articles/punteros-nulos/</guid>
-      <author></author>
-      <description>&lt;p&gt;Al igual que las variables normales, los punteros no se inicializan cuando se
-instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
-basura por defecto.&lt;/p&gt;
-&lt;p&gt;Además de direcciones de memoria, hay un valor adicional que pueden almacenar
-los punteros: un valor null. Un &lt;strong&gt;valor null&lt;/strong&gt; es un valor especial que significa
-que el puntero no está apuntando a nada. A un puntero que almacena un valor null
-se le llama un &lt;strong&gt;puntero nulo&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;En C++, podemos asignar un valor null a un puntero inicializándolo con el literal
-0.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Como un puntero null se evalua a 0, se puede usar dentro de una proposición
-condicional para verificiar si el puntero es nulo o no:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
-
-&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(ptr)
-    &lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;ptr está apuntando a un valor double.&quot;&lt;/span&gt;;
-&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
-    &lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;ptr es un puntero nulo&quot;&lt;/span&gt;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;Mejor práctica: inicializa tus punteros a un valor null si no les darás otro
-valor.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Deferenciando punteros nulos&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Deferenciar un puntero basura nos lleva a resultados indefinifidos. El
-deferenciar un puntero nulo también nos lleva a comportamiento indefinido. En
-la mayoría de los casos, bloqueará tu aplicación.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;el macro NULL&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;C(pero no C++) define un macro de preprocesador llamado NULL que es #defined como
-el valor 0. Incluso aunque no es técnicamente parte de C++, su uso es lo tan
-común que debería funcionar en todo compilador de C++.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Sin embargo, como NULL es un macro del preprocesador y como no es tecnicámente parte
-de C++, la mejor práctica en C++ es evitar usarlo.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;nullptr en C++11&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Nota que el valor 0 no es un tipo de puntero, así que asignarle 0 a un puntero
-para denotar que es un puntero nulo es un poco inconsistente. En casos raros,
-cuando se usa como argumento literal, puede incluso causar problemas porque el
-compilador no puede decidir si nos referimos a un puntero nulo o al entero 0:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;hazAlgo(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//0 es un argumento entero&lt;/span&gt;
-            &lt;span class=&quot;comment&quot;&gt;//o un puntero nulo?&lt;/span&gt;
-            &lt;span class=&quot;comment&quot;&gt;//(asumirá que es entero)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Para encausar estos problemas, C++11 introdujo una nueva palabra clave llamada
-&lt;strong&gt;nullptr&lt;/strong&gt;. Esta es tanto una palabra clave como una constante rvalor, al igual
-que las palabras claves booleanas true and false.&lt;/p&gt;
-&lt;p&gt;Si se trata de C++11, esta palabra clave deberíamos favorecer en lugar del 0
- cuando queramos un puntero nulo.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &lt;span class=&quot;literal&quot;&gt;nullptr&lt;/span&gt;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;C++ convertirá de forma implícita nullptr a cualquier tipo de puntero. Así que
-en el ejemplo de arriba, nullptr se convierte implícitamente a un puntero entero,
-y luego se le asigna el valor de nullptr(0) a ptr.&lt;/p&gt;
-&lt;p&gt;También se puede usar como un literal en una llamada a una función.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;hazAlgo(&lt;span class=&quot;literal&quot;&gt;nullptr&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//este argumento definitivamente&lt;/span&gt;
-                  &lt;span class=&quot;comment&quot;&gt;//es un puntero nulo;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;Mejor práctica: Con C++11, usa nullptr para inicializar tus punteros a un valor
-nulo&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;std::nullptr_t en C++11&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;C++11 también introduce un nuevo tipo llamado std::nullptr_t (en el encabezado&lt;/p&gt;
-&lt;p&gt;&lt;cstddef&gt;). std::nullptr_t sólo puede almacenar un valor: nullptr! Aunque esto
-puede parecer una tontera, es útil en una situación. Si queremos escribir una
-función que acepte un argumento nullptr, ¿de qué tipo hacemos al parámetro?
-La respuesta es std::nullptr_t.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hazAlgo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::nullptr_t ptr)&lt;/span&gt;
-&lt;/span&gt;{
-    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;en hazAlgo()\n&quot;&lt;/span&gt;;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Probablemente ni siquiera uses esto, pero es bueno saberlo, tan sólo por 
-si acaso.&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>Una breve introducción a los punteros</title>
       <link>http://virtualizedd.github.io/return-zero/articles/intro-punteros/</link>
       <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
@@ -99,9 +18,9 @@ si acaso.&lt;/p&gt;
 imaginar la programación sin ellas. Al fin y al cabo, necesitamos de un medio
 para leer y escribir datos en memoria, ¿Y qué más sencillo que dar un nombre fácil
 de recordar y descriptivo a un espacio de la memoria, y luego simplemente
-acceder a ese espacio mediante ese nombre para ya sea lee o escribir el dato
+acceder a ese espacio mediante ese nombre para ya sea leer o escribir el dato
 que almacena? Bueno, justamente eso permiten las variables. Cuando nuestro
-programa instancia a una variable se le asigna automátcamente una dirección de
+programa instancia una variable se le asigna automáticamente una dirección de
 memoria libre, y cualquier valor que le asignemos se almacena en esta dirección
 de memoria. Adicionalmente, lo genial
 con las variables es que no hay necesidad de preocuparse de la dirección 
@@ -486,6 +405,251 @@ tales como las listas enlazadas y los árboles.&lt;/p&gt;
 deferenciar usando el operador (*) para acceder al valor que se almacena en esa
 dirección. Deferenciar a un puntero que almacena valor basura puede bloquear
 tu aplicación.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Punteros, arreglos, y cómo están relacionados</title>
+      <link>http://virtualizedd.github.io/return-zero/articles/punteros-y-arreglos/</link>
+      <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
+      <guid isPermaLink="true">http://virtualizedd.github.io/return-zero/articles/punteros-y-arreglos/</guid>
+      <author></author>
+      <description>&lt;p&gt;Punteros y arreglos están relacionados intrínsicamente en C++. Revisemos sus
+similitudes.&lt;/p&gt;
+&lt;p&gt;&lt;span class = &quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Cuando declaramos un arreglo fijo de la siguiente forma:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;para nosotros esto es un arreglo de 5 enteros, pero para el compilador, un 
+arreglo es una variable de tipo int[5]. Sabemos qué son los valores 
+arreglo[0], arreglo[1], arreglo[2], … arreglo[4] (1, 2, 3, … 4, respectivamente).
+¿Pero qué valor tiene el arreglo mismo?.&lt;/p&gt;
+&lt;p&gt;La variable arreglo contiene la dirección del primer elemento del arreglo, como si
+fuera un puntero! Puedes observar esto en el siguiente programa:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;};
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;El arreglo tiene dirección: &quot;&lt;/span&gt; &amp;lt;&amp;lt; arreglo &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;El elemento 0 tiene dirección: &quot;&lt;/span&gt; &amp;lt;&amp;lt; &amp;amp;arreglo[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;] &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nota que la dirección almacenada por la variable arreglo es la misma dirección
+del primer elemento del arreglo.&lt;/p&gt;
+&lt;p&gt;Es una falacia común creer que un arreglo y un puntero al arreglo son idénticos.
+No lo son. AUnque ambos apuntan al primer elemento del arreglo, tienen diferente
+tipo de información. En el caso de arriba, el arreglo es de tipo int[5], mientras
+que un puntero sería de tipo int *. Veremos dentro de poco donde está la diferencia.&lt;/p&gt;
+&lt;p&gt;La confusión se debe principalmente al hecho de que en muchos casos, cuando se
+evalua un arreglo fijo, esté “decaerá” (se convertiá implícitamente) en un puntero
+al primer elemento del arreglo (esencialmente, perdiendo su información de tipo).&lt;/p&gt;
+&lt;p&gt;Sin embargo, esto también nos permite tratar a los arreglos fijos y a los punteros
+de forma idéntica en la mayoría de los casos.&lt;/p&gt;
+&lt;p&gt;Por ejemplo, podemos deferenciar el arreglo para obtener el valor del primer 
+elemento:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;};
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *arreglo;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nota que no estamos &lt;em&gt;en realidad&lt;/em&gt; deferenciando al array mismo. El arreglo (de
+tipo int[5]) obtiene es convertido de forma implícita a un puntero (de tipo
+int *), y deferenciamos el puntero para obtener el valor en la dirección de memoria
+que almacena el puntero (el valor del primer elemento del arreglo).&lt;/p&gt;
+&lt;p&gt;También podemos asignar un puntero para que apunte a un arreglo.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;}
+
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; *ptr;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esto funciona porque el array decae a un puntero de tipo int *, y nuestro
+puntero (también de tipo int *) tiene el mismo tipo.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Diferencias entre punteros y arreglos fijos&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Hay unas cuántos casos donde escribir un arreglo fijo y un puntero hace una
+diferencia. Estos casos ayudan a ilustrar que un arreglo fijo y un puntero no
+son lo mismo.&lt;/p&gt;
+&lt;p&gt;La principal diferencia ocurre cuando se usa el operador &lt;code&gt;sizeof()&lt;/code&gt;. Cuando se usa
+sobre un arreglo fijo, &lt;code&gt;sizeof&lt;/code&gt; retorna el tamaño del arreglo completo (el tamaño
+de un elemento por la longitud del arreglo). Cuando se usa sobre un puntero,
+&lt;code&gt;sizeof&lt;/code&gt; retorna el tamaño de una dirección de memoria (en bytes). &lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;};
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(arreglo) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//tamaño del arreglo&lt;/span&gt;
+
+&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;;
+
+&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(ptr) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//tamaño del puntero&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Un arreglo fijo sabe cómo de largo es el arreglo al que apunta. Un puntero al
+arreglo no lo sabe.&lt;/p&gt;
+&lt;p&gt;La segunda diferencia ocurre cuando se usa el operador &amp;amp;. Al tomar la dirección
+de memoria de un puntero obtenemos la dirección de memoria de la variable puntero.
+Al tomar la dirección de memoria de un arreglo obtenemos un puntero al arreglo
+completo. Este puntero también apunta al primer elemento del arreglo, pero el
+tipo de información es diferente (en el ejemplo de arriba &lt;code&gt;int(*)[5]&lt;/code&gt;). Es poco
+probable que necesites usar esto.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pasando arreglos fijos a funciones&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Dado que copiar arreglos puede ser algo muy costoso, C++ no copia un arreglo cuando
+se le pasa a una función. En vez de eso, el arreglo fijo decae a un puntero, y el
+puntero se pasa a la función.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;imprimirSize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *arreglo)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(arreglo) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+}
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;};
+
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(arreglo) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+    imprimirSize(arreglo);
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Eso sucede incluso si el parámetro se declara como un arreglo fijo.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;imprimirSize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[])&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(arreglo) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+}
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;};
+
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;keyword&quot;&gt;sizeof&lt;/span&gt;(arreglo) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+    imprimirSize(arreglo);
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En este último ejemplo, C++ convierte implícitamente los parámetros usando la
+síntaxis de arreglos ([]) a la sintaxis de punteros (*), Eso significa que las
+dos declaraciones siguientes son idénticas.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;imprimirSize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[])&lt;/span&gt;&lt;/span&gt;;
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;imprimirSize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *arreglo)&lt;/span&gt;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Algunos programadores prefieren usar [] ya que hace más claro que la función 
+está esperando un arreglo. Sin embargo, en la mayoría de los casos, cómo el
+puntero no sabe cómo de largo es el arreglo, necesitarás pasar el tamaño del
+arreglo como un argumento separado de cualquier forma (los strings son una
+excepción porque acaban con null).&lt;/p&gt;
+&lt;p&gt;Recomendamos usar la síntaxis de punteros, porque deja más claro que los parámetros
+son tratados como punteros, y no como arreglos fijos, y que en ciertas operaciones,
+como &lt;code&gt;sizeof()&lt;/code&gt;, operará como un puntero.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Un poco sobre pasar por referencia/dirección&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;El hecho de que los arreglos decaen a puntero cuando se pasan a una función
+explica la razón por la cual al cambiar un arreglo en una función también se
+cambia el arreglo que se pasa como argumento. Considera el siguiente
+ejemplo:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;cambiarArreglo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr)&lt;/span&gt;
+&lt;/span&gt;{
+    *ptr = &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+}
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; arreglo[] = {&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;};
+
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;El elemento 0 tiene valor: &quot;&lt;/span&gt; &amp;lt;&amp;lt; arreglo[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;] &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+
+    cambiarArreglo(arreglo);
+
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;El elemento 0 tiene valor: &quot;&lt;/span&gt; &amp;lt;&amp;lt; arreglo[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;] &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;'\n'&lt;/span&gt;;
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cuando se llama a cambiarArreglo, el arreglo decae a un puntero, y el valor
+de ese puntero (la dirección de memoria del primer elemento del arreglo) se
+copia en el parámetro ptr de la función. Aunque el valor de ptr es una copia
+de la dirección de memoria del arreglo, apunta al arreglo real (no a una copia!).
+Por lo tanto, cuando se deferencia a ptr, se deferencia al arreglo real!.&lt;/p&gt;
+&lt;p&gt;Los lectores astutos notarán que este fenómeno también ocurre con punteros
+a valores que no son arreglos.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Los arreglos de structs y clases no decaen&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Finalmente, vale destacar que los arreglos que son partes de structs o clases no
+decaen cuando el struct o la clase completa se pasan a una función. Esto
+nos lleva a una forma útil de prevenir que decaigan si así lo queremos,  y que
+será valiosa cuando escribamos clases que usan arreglos.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Declarando punteros nulos</title>
+      <link>http://virtualizedd.github.io/return-zero/articles/punteros-nulos/</link>
+      <pubDate>Sat, 19 Mar 2016 11:00:00 -0300</pubDate>
+      <guid isPermaLink="true">http://virtualizedd.github.io/return-zero/articles/punteros-nulos/</guid>
+      <author></author>
+      <description>&lt;p&gt;Al igual que las variables normales, los punteros no se inicializan cuando se
+instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
+basura por defecto.&lt;/p&gt;
+&lt;p&gt;Además de direcciones de memoria, hay un valor adicional que pueden almacenar
+los punteros: un valor null. Un &lt;strong&gt;valor null&lt;/strong&gt; es un valor especial que significa
+que el puntero no está apuntando a nada. A un puntero que almacena un valor null
+se le llama un &lt;strong&gt;puntero nulo&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;En C++, podemos asignar un valor null a un puntero inicializándolo con el literal
+0.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Como un puntero null se evalua a 0, se puede usar dentro de una proposición
+condicional para verificiar si el puntero es nulo o no:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;double&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(ptr)
+    &lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;ptr está apuntando a un valor double.&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;ptr es un puntero nulo&quot;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Mejor práctica: inicializa tus punteros a un valor null si no les darás otro
+valor.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Deferenciando punteros nulos&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Deferenciar un puntero basura nos lleva a resultados indefinifidos. El
+deferenciar un puntero nulo también nos lleva a comportamiento indefinido. En
+la mayoría de los casos, bloqueará tu aplicación.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;el macro NULL&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;C(pero no C++) define un macro de preprocesador llamado NULL que es #defined como
+el valor 0. Incluso aunque no es técnicamente parte de C++, su uso es lo tan
+común que debería funcionar en todo compilador de C++.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Sin embargo, como NULL es un macro del preprocesador y como no es tecnicámente parte
+de C++, la mejor práctica en C++ es evitar usarlo.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;nullptr en C++11&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Nota que el valor 0 no es un tipo de puntero, así que asignarle 0 a un puntero
+para denotar que es un puntero nulo es un poco inconsistente. En casos raros,
+cuando se usa como argumento literal, puede incluso causar problemas porque el
+compilador no puede decidir si nos referimos a un puntero nulo o al entero 0:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;hazAlgo(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//0 es un argumento entero&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//o un puntero nulo?&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;//(asumirá que es entero)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para encausar estos problemas, C++11 introdujo una nueva palabra clave llamada
+&lt;strong&gt;nullptr&lt;/strong&gt;. Esta es tanto una palabra clave como una constante rvalor, al igual
+que las palabras claves booleanas true and false.&lt;/p&gt;
+&lt;p&gt;Si se trata de C++11, esta palabra clave deberíamos favorecer en lugar del 0
+ cuando queramos un puntero nulo.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *ptr = &lt;span class=&quot;literal&quot;&gt;nullptr&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;C++ convertirá de forma implícita nullptr a cualquier tipo de puntero. Así que
+en el ejemplo de arriba, nullptr se convierte implícitamente a un puntero entero,
+y luego se le asigna el valor de nullptr(0) a ptr.&lt;/p&gt;
+&lt;p&gt;También se puede usar como un literal en una llamada a una función.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;hazAlgo(&lt;span class=&quot;literal&quot;&gt;nullptr&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//este argumento definitivamente&lt;/span&gt;
+                  &lt;span class=&quot;comment&quot;&gt;//es un puntero nulo;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Mejor práctica: Con C++11, usa nullptr para inicializar tus punteros a un valor
+nulo&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;std::nullptr_t en C++11&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;C++11 también introduce un nuevo tipo llamado std::nullptr_t (en el encabezado&lt;/p&gt;
+&lt;p&gt;&lt;cstddef&gt;). std::nullptr_t sólo puede almacenar un valor: nullptr! Aunque esto
+puede parecer una tontera, es útil en una situación. Si queremos escribir una
+función que acepte un argumento nullptr, ¿de qué tipo hacemos al parámetro?
+La respuesta es std::nullptr_t.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cpp&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hazAlgo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::nullptr_t ptr)&lt;/span&gt;
+&lt;/span&gt;{
+    &lt;span class=&quot;built_in&quot;&gt;std&lt;/span&gt;::&lt;span class=&quot;built_in&quot;&gt;cout&lt;/span&gt; &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;en hazAlgo()\n&quot;&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Probablemente ni siquiera uses esto, pero es bueno saberlo, tan sólo por 
+si acaso.&lt;/p&gt;
 </description>
     </item>
     <item>

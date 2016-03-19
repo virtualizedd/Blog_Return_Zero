@@ -4,52 +4,23 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Return Zero
+    <title>Punteros, arreglos, y cómo están relacionados - Return Zero
     </title>
     <link rel="alternate" href="http://virtualizedd.github.io/return-zero/feed.xml" type="application/rss+xml" title="aventuras en C++ y la programación en general">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
     <link rel="stylesheet" href="http://virtualizedd.github.io/return-zero/css/main.css">
   </head>
-  <body>
+  <body class="article-detail">
     <header class="header">
       <div class="content-wrap">
-        <div class="logo">
-          <h1><a href="http://virtualizedd.github.io/return-zero">Return Zero</a></h1>
-          <p class="description">aventuras en C++ y la programación en general</p>
-        </div>
+        <h1>Punteros, arreglos, y cómo están relacionados</h1>
+        <p class="author">Escrito por <span class="author">CodePaste</span>
+        </p>
       </div>
     </header>
     <div id="content">
       <div class="content-wrap">
-        <article class="article intro">
-          <header>
-            <p class="date"><span>19. March 2016</span></p>
-            <h2><a href="http://virtualizedd.github.io/return-zero/articles/intro-punteros/">Una breve introducción a los punteros</a></h2>
-          </header>
-          <section class="content"><p>Las variables son una pieza clave de los lenguajes de programación. Es difícil
-imaginar la programación sin ellas. Al fin y al cabo, necesitamos de un medio
-para leer y escribir datos en memoria, ¿Y qué más sencillo que dar un nombre fácil
-de recordar y descriptivo a un espacio de la memoria, y luego simplemente
-acceder a ese espacio mediante ese nombre para ya sea leer o escribir el dato
-que almacena? Bueno, justamente eso permiten las variables. Cuando nuestro
-programa instancia una variable se le asigna automáticamente una dirección de
-memoria libre, y cualquier valor que le asignemos se almacena en esta dirección
-de memoria. Adicionalmente, lo genial
-con las variables es que no hay necesidad de preocuparse de la dirección 
-de memoria específica en la que se almacena un valor. Sólo es necesario usar 
-el identificador de la variable.
-El compilador hará el trabajo de traducir este identificador a la dirección
-de memoria que tiene&nbsp;asignada.</p>
-<p>Este enfoque, sin embargo, tiene algunas&nbsp;limitaciones.</p>
-<p>
-            <p class="more"><a href="http://virtualizedd.github.io/return-zero/articles/intro-punteros/">leer más</a></p>
-          </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>19. March 2016</span></p>
-            <h2><a href="http://virtualizedd.github.io/return-zero/articles/punteros-y-arreglos/">Punteros, arreglos, y cómo están relacionados</a></h2>
-          </header>
+        <article class="article">
           <section class="content"><p>Punteros y arreglos están relacionados intrínsicamente en C++. Revisemos sus&nbsp;similitudes.</p>
 <p><span class = "more"></span></p>
 <p>Cuando declaramos un arreglo fijo de la siguiente&nbsp;forma:</p>
@@ -203,48 +174,13 @@ a valores que no son&nbsp;arreglos.</p>
 decaen cuando el struct o la clase completa se pasan a una función. Esto
 nos lleva a una forma útil de prevenir que decaigan si así lo queremos,  y que
 será valiosa cuando escribamos clases que usan&nbsp;arreglos.</p>
-
-          </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>19. March 2016</span></p>
-            <h2><a href="http://virtualizedd.github.io/return-zero/articles/punteros-nulos/">Declarando punteros nulos</a></h2>
-          </header>
-          <section class="content"><p>Al igual que las variables normales, los punteros no se inicializan cuando se
-instancian. A menos que se asigne un valor, un puntero apuntará a algún dirección
-basura por&nbsp;defecto.</p>
-<p>Además de direcciones de memoria, hay un valor adicional que pueden almacenar
-los punteros: un valor null. Un <strong>valor null</strong> es un valor especial que significa
-que el puntero no está apuntando a nada. A un puntero que almacena un valor null
-se le llama un <strong>puntero nulo</strong>.</p>
-<p>
-            <p class="more"><a href="http://virtualizedd.github.io/return-zero/articles/punteros-nulos/">leer más</a></p>
-          </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>18. March 2016</span></p>
-            <h2><a href="http://virtualizedd.github.io/return-zero/articles/plantillas-funciones/">Definiendo funciones no tipadas con el uso plantillas</a></h2>
-          </header>
-          <section class="content"><p>Como con cualquier otro lenguaje de tipado estático, cuando escribimos programas
-en C++ estamos obligados a especificar siempre los tipos de nuestras variables,
-pues de otro modo el programa no compilará. Esta característica, por supuesto,
-incluye sus ventajas. En especial, significa ahorrarle a la máquina que tipifique
-las variables en tiempo de ejecución, y por lo tanto, obtener una mejor 
-eficiencia. Pero similar a casi cualquier otra ventaja, también significa dar
-algo a cambio. En este caso, es a costa de la potencial flexibilidad que se puede
-observar en lenguajes de tipado dinámico como Python o&nbsp;Ruby.
-
-            <p class="more"><a href="http://virtualizedd.github.io/return-zero/articles/plantillas-funciones/">leer más</a></p>
-          </section>
+</section>
         </article>
       </div>
     </div>
     <footer>
       <div class="content-wrap">
-        <div class="nav"><a href="http://virtualizedd.github.io/return-zero/archive.html">« Archivos</a>
-        </div>
+        <div class="nav"><a href="http://virtualizedd.github.io/return-zero">« Inicio </a></div>
         <section class="about">
         </section>
         <section class="copy">

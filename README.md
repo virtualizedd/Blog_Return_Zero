@@ -2,4 +2,6 @@
 ####Aventuras en C++ y la programación en general
 ---
 
-Estáticos del blog. 
+[Enlace al blog](https://virtualizedd.github.io/return-zero
+
+Estáticos del blog generados con wintersmith.
